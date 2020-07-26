@@ -28,11 +28,22 @@ The graph stored in the pickle file contains all the edges so that each node can
 The nodes.py file is run by the mainnode.py. Each node runs 2 threads. One that takes packket inputs from command line and sends to the destination and other thread handles the packets recieved from neighbor nodes. A nodes port no is simply calculated as (10000+id).
 
 ### Dynamic Source Routing
-This is a reactive protocols in which flooding is used for establishing routes. When a node wants to send a packet to the destination, it checks whether it knows the route to the destination, if it doesnt , then a route discovery(rreq) packet is generated (Concepts of flooding apply) and broadcasted. The destination node on recieveing the packet sends a Route reply(rrep) packet along the path backwards to which it was recieved (each node reciveing rreq packets append itself to the path and broadcasts it ie rreq packets contain the paths the followed). When the sender S recieves the rrep packet it stores the route and sends the data packet to the destination along the path it recieved in rrep packet. 
+This is a reactive protocols in which flooding is used for establishing routes. When a node wants to send a packet to the destination, it checks whether it knows the route to the destination, if it doesnt , then a route discovery(rreq) packet is generated (Concepts of flooding apply) and broadcasted. The destination node on recieveing the packet sends a Route reply(rrep) packet along the path backwards to which it was recieved (each node reciveing rreq packets append itself to the path and broadcasts it ie rreq packets contain the paths the followed). When the sender S recieves the rrep packet it stores the route and sends the data packet to the destination along the path it recieved in rrep packet. When forwarding the data packet with route SEFJD and J-D fails then J sends a route error RERR[J-D] to S along route J-F-E-S and Nodes hearing RERR update their route cache to remove link J-D
+
 Route Optimizations
 - Node S finds route [S,E,F,J,D] to node D then it also learns route [S,E,F,J] to J.
 - Node E receives RREQ [S,C,G] then it learns route [E,G,C,S] to S (assuming bi-directional links).
 - Node F receives RREP [S,E,F,J,D] then it learns route [F,J,D] to D.
 - Node G forwards Data [S,G,F,J,D] then it learns route [G,F,J,D] to D.
 - Node F receives a RREQ [S,..X] for some node D, If it knows route [F,...,D], F returns RREP [S,..,X,F,...,D], Otherwise, F broadcasts RREQ [S,..X] to neighbors
-- When forwarding the data packet with route SEFJD and J-D fails then J sends a route error RERR[J-D] to S along route J-F-E-S and Nodes hearing RERR update their route cache to remove link J-D
+
+#### File mainnode.py
+The files does the works the same as for flooding. Added functions include changing of routes after every two packets(change line 96 to change this). After creating a new graph a signal is sent to nodes in response to which they read the graph again stored in the pickle file.
+#### File nodes.py
+The files performs the same functions as it did for flooding as well as the required functionality for route discovery, route reply, data packets. 
+
+## How to run
+- Run the graphgenerator.py file.
+<python graphgenerator.py>
+- Run the mainnode.py file.
+<python mainnode.py>
