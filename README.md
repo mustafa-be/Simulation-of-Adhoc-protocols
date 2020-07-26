@@ -43,7 +43,5 @@ The files does the works the same as for flooding. Added functions include chang
 The files performs the same functions as it did for flooding as well as the required functionality for route discovery, route reply, data packets. 
 
 ## How to run
-- Run the graphgenerator.py file.
-<python graphgenerator.py>
-- Run the mainnode.py file.
-<python mainnode.py>
+- Run the graphgenerator.py file. python graphgenerator.py
+- Run the mainnode.py file. python mainnode.py
